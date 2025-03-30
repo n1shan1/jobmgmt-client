@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { ChevronDownIcon, UploadIcon, CalendarIcon } from "lucide-react";
-import type { JobFormState } from "@/types";
+import type { JobFormState } from "../types";
 
 interface CreateJobFormProps {
   onSubmit: (formData: JobFormState) => void;
