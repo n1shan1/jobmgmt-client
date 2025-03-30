@@ -12,8 +12,8 @@ import {
 import { theme } from "../theme";
 
 export const metadata = {
-  title: "Mantine Next.js template",
-  description: "I am using Mantine with Next.js!",
+  title: "Job Management",
+  description: "Manage your job postings efficiently",
 };
 
 export default function RootLayout({
