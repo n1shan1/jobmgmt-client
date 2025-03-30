@@ -1,10 +1,14 @@
 import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 import React from "react";
 import {
   MantineProvider,
   ColorSchemeScript,
   mantineHtmlProps,
+  createTheme,
+  type MantineColorsTuple,
 } from "@mantine/core";
+
 import { theme } from "../theme";
 
 export const metadata = {
@@ -12,7 +16,11 @@ export const metadata = {
   description: "I am using Mantine with Next.js!",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" {...mantineHtmlProps}>
       <head>
