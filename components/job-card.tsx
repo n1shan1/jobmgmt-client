@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mantine/core";
 import { ClockIcon, MapPinIcon, BriefcaseIcon } from "lucide-react";
-import type { JobListing, CompanyLogos } from "@/types";
+import type { JobListing, CompanyLogos } from "../types";
 
 interface JobCardProps {
   job: JobListing;
