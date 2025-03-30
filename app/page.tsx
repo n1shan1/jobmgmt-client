@@ -72,7 +72,8 @@ const companyLogos: CompanyLogos = {
 };
 
 // API URL
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://jobmgmt-server.onrender.com";
 
 // Form state types
 interface JobFormState {
