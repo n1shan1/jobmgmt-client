@@ -10,6 +10,9 @@ import {
 } from "@mantine/core";
 
 import { theme } from "../theme";
+import { AppContextProvider } from "../context/AppContext";
+import { Providers } from "./providers";
+import NavBar from "../components/NavBar";
 
 export const metadata = {
   title: "Job Management",
@@ -32,7 +35,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <Providers>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+        </Providers>
       </body>
     </html>
   );

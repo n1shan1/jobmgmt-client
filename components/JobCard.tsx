@@ -1,63 +1,79 @@
 import {
   Card,
-  Group,
   Avatar,
   Badge,
   Title,
+  Group,
   Text,
   Stack,
   Button,
+  Image,
+  CardSection,
 } from "@mantine/core";
 import {
   BriefcaseIcon as IconBriefcase,
   MapPinIcon as IconMapPin,
   ClockIcon as IconClock,
+  UserPlus2Icon,
+  Layers2Icon,
+  Building2Icon,
 } from "lucide-react";
-
-// Import types
-interface JobListing {
-  id: string;
-  title: string;
-  companyName: string;
-  location: string;
-  jobType: string;
-  minSalary: number;
-  maxSalary: number;
-  description: string;
-  requirements?: string;
-  responsibilities?: string;
-  applicationDeadline: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface CompanyLogos {
-  amazon: string;
-  tesla: string;
-  swiggy: string;
-  [key: string]: string;
-}
+import { JobListing } from "../types";
+import { companyLogos, LOGO } from "../assets/index";
 
 interface JobCardProps {
   job: JobListing;
-  companyLogos: CompanyLogos;
 }
 
-export default function JobCard({ job, companyLogos }: JobCardProps) {
+export default function JobCard({ job }: JobCardProps) {
+  // Get the logo based on company name (case insensitive)
+  const getCompanyLogo = (companyName: string) => {
+    const normalizedName = companyName.toLowerCase();
+
+    // Check if the company name exists as a key in companyLogos (case insensitive)
+    const companyKey = Object.keys(companyLogos).find(
+      (key) => key.toLowerCase() === normalizedName
+    );
+
+    // Return the found logo or placeholder if not found
+    return companyKey
+      ? companyLogos[companyKey as keyof typeof companyLogos]
+      : LOGO;
+  };
+
+  const logo = getCompanyLogo(job.companyName);
+
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Card.Section p="md">
-        <Group justify="apart">
-          <Avatar
-            src={
-              companyLogos[job.companyName.toLowerCase()] ||
-              "/placeholder.svg?height=80&width=80"
-            }
-            size="lg"
-            radius="sm"
-          />
-          <Badge color="blue" variant="light">
-            {new Date(job.createdAt).toLocaleDateString()}
+    <Card shadow="lg" padding="lg" radius="lg">
+      <Card.Section p="sm">
+        <Group justify="space-between">
+          <Image src={logo.src} height={80} width={80} radius="md" />
+          <Badge
+            style={{
+              backgroundColor: "#B0D9FF",
+              color: "black",
+              borderRadius: "10px",
+              paddingBlock: "15px",
+            }}
+          >
+            {(() => {
+              const createdAt = new Date(job.createdAt);
+              const now = new Date();
+              const diffMs = now.getTime() - createdAt.getTime();
+              const diffSecs = Math.floor(diffMs / 1000);
+              const diffMins = Math.floor(diffSecs / 60);
+              const diffHours = Math.floor(diffMins / 60);
+              const diffDays = Math.floor(diffHours / 24);
+              const diffWeeks = Math.floor(diffDays / 7);
+              const diffMonths = Math.floor(diffDays / 30);
+
+              if (diffMonths > 0) return `${diffMonths}mo ago`;
+              if (diffWeeks > 0) return `${diffWeeks}w ago`;
+              if (diffDays > 0) return `${diffDays}d ago`;
+              if (diffHours > 0) return `${diffHours}h ago`;
+              if (diffMins > 0) return `${diffMins}m ago`;
+              return "Just now";
+            })()}
           </Badge>
         </Group>
       </Card.Section>
@@ -66,16 +82,58 @@ export default function JobCard({ job, companyLogos }: JobCardProps) {
         {job.title}
       </Title>
 
-      <Group gap="xs" mb="md">
-        <Badge variant="light" leftSection={<IconBriefcase size={12} />}>
-          {job.jobType}
-        </Badge>
-        <Badge variant="light" leftSection={<IconMapPin size={12} />}>
-          {job.location}
-        </Badge>
-        <Badge variant="light" leftSection={<IconClock size={12} />}>
-          ₹{job.minSalary / 1000}k - ₹{job.maxSalary / 1000}k
-        </Badge>
+      <Group
+        mb="md"
+        mx={0}
+        px={0}
+        gap="xs"
+        wrap="nowrap"
+        h={10}
+        justify="space-around"
+      >
+        <h5
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <UserPlus2Icon
+            stroke="gray"
+            size={12}
+            style={{ marginRight: "7px" }}
+          />
+          <p style={{ fontSize: "12px", color: "gray" }}>
+            {job.requirements?.slice(0, 3) + " Yrs Exp"}
+          </p>
+        </h5>
+        <h5
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Building2Icon
+            stroke="gray"
+            size={12}
+            style={{ marginRight: "7px" }}
+          />
+
+          <p style={{ fontSize: "12px", color: "gray" }}>{job.location}</p>
+        </h5>
+        <h5
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Layers2Icon stroke="gray" size={12} style={{ marginRight: "7px" }} />
+          <p style={{ fontSize: "12px", color: "gray" }}>
+            {job.maxSalary / 10000 + " LPA"}
+          </p>
+        </h5>
       </Group>
 
       <Stack gap={5} mb="xl">
@@ -89,7 +147,19 @@ export default function JobCard({ job, companyLogos }: JobCardProps) {
         )}
       </Stack>
 
-      <Button fullWidth radius="md" color="blue">
+      <Button
+        variant="filled"
+        radius={"md"}
+        h={45}
+        color="#00AAFF"
+        fullWidth
+
+        // style={{
+        //   paddingBlock: "22px",
+        //   borderRadius: "10px",
+        //   backgroundColor: "#00AAFF",
+        // }}
+      >
         Apply Now
       </Button>
     </Card>

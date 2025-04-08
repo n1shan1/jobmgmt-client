@@ -1,9 +1,18 @@
-import { Group, TextInput, Select, Text, RangeSlider } from "@mantine/core";
+import {
+  Group,
+  TextInput,
+  Select,
+  Text,
+  RangeSlider,
+  Divider,
+} from "@mantine/core";
 import {
   SearchIcon as IconSearch,
   MapPinIcon as IconMapPin,
   BriefcaseIcon as IconBriefcase,
   ChevronDownIcon as IconChevronDown,
+  User2Icon,
+  UserSearchIcon,
 } from "lucide-react";
 
 interface SearchFiltersProps {
@@ -29,66 +38,90 @@ export default function SearchFilters({
 }: SearchFiltersProps) {
   return (
     <>
-      <Group mb="xl" grow>
+      <Group
+        my={20}
+        style={{
+          paddingBottom: "30px",
+        }}
+        justify="space-between"
+      >
         <TextInput
           placeholder="Search By Job Title, Role"
           leftSection={<IconSearch size={16} />}
           size="md"
-          radius="md"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.currentTarget.value)}
+          variant="unstyled"
         />
+        <Divider orientation="vertical" />
         <Select
           placeholder="Preferred Location"
           leftSection={<IconMapPin size={16} />}
           rightSection={<IconChevronDown size={16} />}
           size="md"
-          radius="md"
           data={["Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai"]}
           value={selectedLocation}
           onChange={setSelectedLocation}
+          comboboxProps={{
+            transitionProps: { transition: "pop", duration: 200 },
+            shadow: "md",
+            radius: "md",
+          }}
+          variant="unstyled"
+          searchable
         />
+        <Divider orientation="vertical" />
+
         <Select
           placeholder="Job type"
-          leftSection={<IconBriefcase size={16} />}
+          leftSection={<UserSearchIcon size={16} />}
           rightSection={<IconChevronDown size={16} />}
           size="md"
           radius="md"
+          variant="unstyled"
           data={[
-            "Full Time",
-            "Part Time",
-            "Contract",
-            "Freelance",
-            "Internship",
+            { value: "FULL_TIME", label: "Full Time" },
+            { value: "PART_TIME", label: "Part Time" },
+            { value: "CONTRACT", label: "Contract" },
+            { value: "FREELANCE", label: "Freelance" },
+            { value: "INTERNSHIP", label: "Internship" },
           ]}
+          comboboxProps={{
+            transitionProps: { transition: "pop", duration: 200 },
+            shadow: "md",
+            radius: "md",
+          }}
           value={selectedJobType}
           onChange={setSelectedJobType}
         />
-      </Group>
+        <Divider orientation="vertical" />
 
-      <Group mb="xl" justify="apart" align="center">
-        <Text fw={500}>Salary Per Month</Text>
-        <Text fw={500}>
-          ₹{salaryRange[0]}k - ₹{salaryRange[1]}k
-        </Text>
+        <Group style={{ display: "flex", flexDirection: "column" }}>
+          <Group
+            justify="space-around"
+            align="center"
+            style={{ width: "100%" }}
+          >
+            <Text fw={500}>Salary Per Month</Text>
+            <Text fw={500}>
+              ₹{salaryRange[0]}k - ₹{salaryRange[1]}k
+            </Text>
+          </Group>
+          <RangeSlider
+            variant="unstyled"
+            py={2}
+            style={{ width: "100%", color: "black" }}
+            min={0}
+            max={200}
+            size={"sm"}
+            step={5}
+            minRange={0}
+            color="black"
+            value={salaryRange}
+            onChange={setSalaryRange}
+          />
+        </Group>
       </Group>
-
-      <RangeSlider
-        mb="xl"
-        min={0}
-        max={200}
-        step={5}
-        minRange={10}
-        value={salaryRange}
-        onChange={setSalaryRange}
-        marks={[
-          { value: 0, label: "₹0k" },
-          { value: 50, label: "₹50k" },
-          { value: 100, label: "₹100k" },
-          { value: 150, label: "₹150k" },
-          { value: 200, label: "₹200k" },
-        ]}
-      />
     </>
   );
 }
